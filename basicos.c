@@ -23,30 +23,13 @@ int main()
     printf("%d\n", numero4);
 
     printf("Por favor teclee un numero\n");
+    
     int numeroUsuario;
     scanf("%d", &numeroUsuario);
     printf("El usuario introdujo el numero %d\n", numeroUsuario);
 
-    /*
-    6, REGLA del AND &&
+   
 
-    comer | irAlCine | SER FELIZ resultado AND
-    0       0         0
-    0       1         0
-    1       0         0
-    1       1         1
-
-
-    7, REGLA del OR ||
-
-    comer | irAlCine | SER FELIZ resultado OR
-    0       0         0
-    0       1         1
-    1       0         1
-    1       1         1
-
-    8, REGLA del NOT !=    
-    */
-
+    printf("Programa finalizado\n");  
     return 0;
 }
