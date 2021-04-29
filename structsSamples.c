@@ -38,5 +38,10 @@ int main()
     printf("Book 3 subject : %s\n", thirdBook.subject);
     printf("Book 3 book_id : %d\n", thirdBook.book_id);
 
+
+    Books * pointerBook= &thirdBook;
+
+    printf("%s\n",pointerBook->title);
+
     return 0;
 }
