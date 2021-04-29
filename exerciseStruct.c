@@ -23,36 +23,36 @@ void printIndividualBook(Books );
 int main()
 {
     Books library[MAX_LIBRARY_SIZE];
-    char selectedOption;
+    int selectedOption;
     int currentSize=0;
     printf("welcome to our library\n");
 
-    do
+    while (selectedOption!=-1)
     {
         printMenu();
-        scanf("%c",selectedOption);
+        scanf("%d",&selectedOption);
         switch (selectedOption)
         {
-        case 'n':
-            createNewBook(library,currentSize);
-            currentSize++;
-            break;
-        case 'l':
-            listAllBooks(library,currentSize);
-            break;
-        default:
-            break;
+            case 1:
+                createNewBook(library,currentSize);
+                currentSize++;
+                break;
+            case 2:
+                listAllBooks(library,currentSize);
+                break;
+            default:
+                break;
         }
 
-    } while (selectedOption!='e');
-    
+    } 
     return 0;
 }
 
 void printMenu(){
-    printf("Please press n to create a new book\n");
-    printf("Please press l to list all the books\n");
-    printf("Please press e to exit our system\n");
+    printf("\nPlease press 1 to create a new book\n");
+    printf("Please press 2 to list all the books\n");
+    printf("Please press -1 to exit our system\n");
+    return;
 
 }
 
@@ -71,18 +71,29 @@ void createNewBook(Books * library, int index){
     scanf("%s",subject);
 
     printf("please enter the book_id : \n");
-    scanf("%d",book_id);
+    scanf("%d",&book_id);
 
-    Books newOne ={title,author,subject,book_id};
+    Books newOne;
+    strcpy(newOne.title, title);
+    strcpy(newOne.author, author);
+    strcpy(newOne.subject, subject);
+    newOne.book_id = book_id;
+
     library[index]=newOne;
 
 }
 void listAllBooks(Books * library, int currentSize){
     int i;
+    printf("*******Listing******* \n");
+    
     for ( i = 0; i < currentSize; i++)
     {
         printIndividualBook(library[i]);
+        printf("--------\n");
+
     }
+    printf("************** \n");
+    printf("Done \n");
     
 }
 
