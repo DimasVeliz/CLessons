@@ -43,26 +43,26 @@ typedef struct
 
 } Search;
 
-int fileExist(char *);
-int loadIndividualCostume(Costume *, int, char *, int);
-int loadAllCostumes(Costume *, int, char *);
-void printCostumes(Costume *, int);
+int fileExist(char []);
+int loadIndividualCostume(Costume [], int, char [], int);
+int loadAllCostumes(Costume [], int, char []);
+void printCostumes(Costume [], int);
 void printIndividualCostume(Costume);
 
-int loadIndividualActor(Actor *, int, char *, int);
-int loadAllActors(Actor *, int, char *);
-void printActors(Actor *, int);
+int loadIndividualActor(Actor [], int, char [], int);
+int loadAllActors(Actor [], int, char []);
+void printActors(Actor [], int);
 void printIndividualActor(Actor);
 
-int loadIndividualSearch(Search *, int, char *, int);
-int loadAllSearchs(Search *, int, char *);
-void printSearchs(Search *, int);
+int loadIndividualSearch(Search [], int, char [], int);
+int loadAllSearchs(Search [], int, char []);
+void printSearchs(Search [], int);
 void printIndividualSearch(Search);
 
-void showAllRelationships(Search *, Costume *, Actor *,int,int,int);
+void showAllRelationships(Search [], Costume [], Actor [],int,int,int);
 
-int findCorrespondingPersonInActorsList(Actor *, Actor, char *, int);
-int countOutfitsThatMatch(char *, char, Costume *, int);
+int findCorrespondingPersonInActorsList(Actor [], Actor, char [], int);
+int countOutfitsThatMatch(char [], char, Costume [], int);
 
 
 
@@ -173,7 +173,7 @@ int main()
     return 0;
 }
 
-int fileExist(char *filename)
+int fileExist(char filename[])
 {
     FILE *file;
     if (file = fopen(filename, "r"))
@@ -184,7 +184,7 @@ int fileExist(char *filename)
     return 0;
 }
 
-int loadIndividualCostume(Costume *allCostumes, int index, char *strLine, int sizeLine)
+int loadIndividualCostume(Costume allCostumes[], int index, char strLine[], int sizeLine)
 {
 
     Costume newOne;
@@ -242,7 +242,7 @@ int loadIndividualCostume(Costume *allCostumes, int index, char *strLine, int si
     allCostumes[index++] = newOne;
     return index;
 }
-int loadAllCostumes(Costume *allCostumes, int currentSize, char *fileName)
+int loadAllCostumes(Costume allCostumes[], int currentSize, char fileName[])
 {
     FILE *fp;
     char *line = NULL;
@@ -264,7 +264,7 @@ int loadAllCostumes(Costume *allCostumes, int currentSize, char *fileName)
     return currentSize;
 }
 
-void printCostumes(Costume *allCostumes, int size)
+void printCostumes(Costume allCostumes [], int size)
 {
     for (int i = 0; i < size; i++)
     {
@@ -279,7 +279,7 @@ void printIndividualCostume(Costume c)
     printf("%s \n", c.size);
 }
 
-int loadIndividualActor(Actor *allActors, int index, char *strLine, int sizeLine)
+int loadIndividualActor(Actor allActors[], int index, char strLine [], int sizeLine)
 {
     Actor newOne;
     int separatorsPositions[3];
@@ -323,6 +323,7 @@ int loadIndividualActor(Actor *allActors, int index, char *strLine, int sizeLine
     strncpy(email, strLine + emailStars, emailEnds - emailStars + 1);
     email[emailEnds - emailStars + 1] = '\0';
 
+    
     strcpy(newOne.name, name);
     strcpy(newOne.costume_size, sizeChar);
     newOne.age = age;
@@ -337,7 +338,7 @@ int loadIndividualActor(Actor *allActors, int index, char *strLine, int sizeLine
     allActors[index++] = newOne;
     return index;
 }
-int loadAllActors(Actor *allActors, int currentSize, char *fileName)
+int loadAllActors(Actor allActors[], int currentSize, char fileName[])
 {
     FILE *fp;
     char *line = NULL;
@@ -367,7 +368,7 @@ void printIndividualActor(Actor newOne)
     printf("%d ", newOne.age);
     printf("%s \n", newOne.contact_information.email);
 }
-void printActors(Actor *allActors, int size)
+void printActors(Actor allActors[], int size)
 {
     for (int i = 0; i < size; i++)
     {
@@ -375,7 +376,7 @@ void printActors(Actor *allActors, int size)
     }
 }
 
-int loadIndividualSearch(Search *allSearches, int index, char *strLine, int sizeLine)
+int loadIndividualSearch(Search allSearches[], int index, char strLine[], int sizeLine)
 {
     Search newOne;
     int separatorsPositions[1];
@@ -407,7 +408,7 @@ int loadIndividualSearch(Search *allSearches, int index, char *strLine, int size
     allSearches[index++] = newOne;
     return index;
 }
-int loadAllSearchs(Search *allSearches, int currentSize, char *fileName)
+int loadAllSearchs(Search allSearches[], int currentSize, char fileName[])
 {
     FILE *fp;
     char *line = NULL;
@@ -435,7 +436,7 @@ void printIndividualSearch(Search newOne)
     printf("%c ", newOne.cat);
     printf("%s \n", newOne.name);
 }
-void printSearchs(Search *allSearchs, int size)
+void printSearchs(Search allSearchs[], int size)
 {
     for (int i = 0; i < size; i++)
     {
@@ -443,7 +444,7 @@ void printSearchs(Search *allSearchs, int size)
     }
 }
 
-void showAllRelationships(Search *searches, Costume *costumes, Actor *actors, int sS, int sC, int sA)
+void showAllRelationships(Search searches[], Costume costumes[], Actor actors[], int sS, int sC, int sA)
 {
 
     char category;
@@ -474,7 +475,7 @@ void showAllRelationships(Search *searches, Costume *costumes, Actor *actors, in
     }
 }
 
-int findCorrespondingPersonInActorsList(Actor * actors, Actor correspondingPerson, char *name, int sizeActors)
+int findCorrespondingPersonInActorsList(Actor actors[], Actor correspondingPerson, char name[], int sizeActors)
 {
     for (int i = 0; i < sizeActors; i++)
     {
@@ -488,7 +489,7 @@ int findCorrespondingPersonInActorsList(Actor * actors, Actor correspondingPerso
     return -1;
     
 }
-int countOutfitsThatMatch(char * sizePeople, char category, Costume * costumes, int sizeCostumes){
+int countOutfitsThatMatch(char sizePeople[], char category, Costume  costumes[], int sizeCostumes){
     int counter =0;
     for (int i = 0; i < sizeCostumes; i++)
     {
