@@ -33,86 +33,32 @@ void printAllBands(Band *, int);
 void printIndividualMusician(Musician);
 void printAllMusicians(Musician *, int);
 
-void printBandNamesAsAppeared(char **, int);
-
 int readAllVenues(Venue *, int, char *);
 int readAllBands(Band *, int, char *);
 int readAllMusicians(Musician *, int, char *, char **);
-void assingBandsFromListOFMusicians(Band *, Musician *, char **, int , int );
+void assingBandsFromListOFMusicians(Band *, Musician *, char **, int, int);
 
-int main()
+int fileExist(char[]);
+
+void baseMenu();
+void mainMenu();
+void printSubMenuOption1();
+void printSubMenuOption2();
+void printSubMenuOption3();
+
+float calculateTicketPrice(int, int);
+
+
+
+
+int fileExist(char filename[])
 {
-    int i;
-
-    char *filenameM;
-    char *filenameB;
-    char *filenameV;
-
-    Venue *venues;
-    Musician *musicians;
-    Band *bands;
-
-    int venuesSize;
-    int musiciansSize;
-    int bandsSize;
-  
-
-    char **musiciansBandNames;
-
-    filenameB = "./bands";
-    bandsSize = readEntitySize(filenameB);
-    filenameM = "./musicians";
-    musiciansSize = readEntitySize(filenameM);
-    filenameV = "./venues";
-    venuesSize = readEntitySize(filenameV);
-
-    venues = (Venue *)malloc(venuesSize * sizeof(Venue));
-    bands = (Band *)malloc(venuesSize * sizeof(Band));
-    musicians = (Musician *)malloc(musiciansSize * sizeof(Musician));
-    musiciansBandNames = (char **)malloc(musiciansSize * sizeof(char *));
-    for (i = 0; i < musiciansSize; i++)
+    FILE *file;
+    if (file = fopen(filename, "r"))
     {
-        musiciansBandNames[i] = (char *)malloc(50 * sizeof(char));
+        fclose(file);
+        return 1;
     }
-
-    readAllVenues(venues, venuesSize, filenameV);
-    /*printAllVenues(venues, venuesSize);*/
-
-    readAllBands(bands, bandsSize, filenameB);
-    /*printAllBands(bands, bandsSize);*/
-
-    readAllMusicians(musicians, musiciansSize, filenameM, musiciansBandNames);
-
-    /*assigning individual bands to each band from list of musicians*/
-    assingBandsFromListOFMusicians(bands, musicians, musiciansBandNames, bandsSize, musiciansSize);
-
-    /*printAllMusicians(musicians, musiciansSize);*/
-
-    /*printf("\nBand names are:\n");*/
-    /*printBandNamesAsAppeared(musiciansBandNames, musiciansSize);*/
-
-    /*
-    Venue v1;
-    Venue v2;
-    Venue v3;
-
-    v1.capacity = 27;
-    strcpy(v1.name, "testing 1");
-
-    v2.capacity = 21;
-    strcpy(v2.name, "testing 2");
-
-    v3.capacity = 80;
-    strcpy(v3.name, "testing 3");
-
-    venues[0] = v1;
-    venues[1] = v2;
-    venues[2] = v3;
-
-*/
-
-    printAllBands(bands, bandsSize);
-
     return 0;
 }
 int readEntitySize(char *filename)
@@ -143,16 +89,16 @@ void printBandNamesAsAppeared(char **bandNames, int size)
 void printAllMusicians(Musician *musicians, int musicianSize)
 {
     int i;
-
+    printf("Members\n");
     for (i = 0; i < musicianSize; i++)
     {
+        printf("-");
         printIndividualMusician(musicians[i]);
     }
 }
 void printIndividualMusician(Musician item)
 {
     printf("%s", item.name);
-    printf("%d\n", item.age);
 }
 
 void printAllBands(Band *bands, int bandsSize)
@@ -161,17 +107,13 @@ void printAllBands(Band *bands, int bandsSize)
 
     for (i = 0; i < bandsSize; i++)
     {
+        printf("%d- ", i + 1);
         printIndividualBand(bands[i]);
     }
 }
 void printIndividualBand(Band item)
 {
     printf("%s", item.name);
-    printf("%d\n", item.cache);
-    printf("%d\n", item.num_musicians);
-    printf("Imprimiendo Banda:\n");
-    printAllMusicians(item.musicians, item.num_musicians);
-    printf("done\n");
 }
 
 void printAllVenues(Venue *venues, int venuesSize)
@@ -180,13 +122,13 @@ void printAllVenues(Venue *venues, int venuesSize)
 
     for (i = 0; i < venuesSize; i++)
     {
+        printf("%d- ", i + 1);
         printIndividualVenues(venues[i]);
     }
 }
 void printIndividualVenues(Venue item)
 {
     printf("%s", item.name);
-    printf("%d\n", item.capacity);
 }
 
 int readAllVenues(Venue *venues, int maxSize, char *fileName)
@@ -369,4 +311,158 @@ void assingBandsFromListOFMusicians(Band *bands, Musician *musicians, char **mus
             }
         }
     }
+}
+
+void mainMenu()
+{
+    printf("1 show  Bands or show venues |2 Calculate ticket price | 3 show band members | 4 exit.\n select option : ");
+}
+void printSubMenuOption1()
+{
+    printf("1 show bands | 2 show venues.\n select option : ");
+}
+void printSubMenuOption2()
+{
+    printf("Select band number and then venue number: ");
+}
+void printSubMenuOption3()
+{
+    printf("Select band number: ");
+}
+
+float calculateTicketPrice(int cache, int capacity)
+{
+    return (float)cache / capacity;
+}
+
+
+
+int main()
+{
+    int i;
+    int loadedVenues = 0;
+    int loadedBands = 0;
+    int loadedMusicians = 0;
+
+    int optionMenu;
+    int childOption;
+    int bandNumber;
+    int venueNumber;
+    float resultTicket;
+
+    char filenameM[50];
+    char filenameB[50];
+    char filenameV[50];
+
+    Venue *venues;
+    Musician *musicians;
+    Band *bands;
+
+    int venuesSize;
+    int musiciansSize;
+    int bandsSize;
+
+    char **musiciansBandNames;
+
+    while (loadedVenues == 0 || loadedBands == 0 || loadedMusicians == 0)
+    {
+        printf("Welcome!\nIntroduce the file names:\n");
+        printf("-bands: ");
+        scanf("%s", filenameB);
+        printf("-musicians: ");
+        scanf("%s", filenameM);
+        printf("-venues: ");
+        scanf("%s", filenameV);
+
+        loadedBands = fileExist(filenameB);
+        loadedMusicians = fileExist(filenameM);
+        loadedVenues = fileExist(filenameV);
+
+        if (loadedBands==0)
+        {
+            printf("Cannot open file '%s'\n",filenameB);
+        }
+        if (loadedMusicians==0)
+        {
+            printf("Cannot open file '%s'\n",filenameM);
+        }
+        if (loadedVenues==0)
+        {
+            printf("Cannot open file '%s'\n",filenameV);
+        }
+        
+    }
+
+    bandsSize = readEntitySize(filenameB);
+
+    musiciansSize = readEntitySize(filenameM);
+
+    venuesSize = readEntitySize(filenameV);
+
+    venues = (Venue *)malloc(venuesSize * sizeof(Venue));
+    bands = (Band *)malloc(venuesSize * sizeof(Band));
+    musicians = (Musician *)malloc(musiciansSize * sizeof(Musician));
+    musiciansBandNames = (char **)malloc(musiciansSize * sizeof(char *));
+    for (i = 0; i < musiciansSize; i++)
+    {
+        musiciansBandNames[i] = (char *)malloc(50 * sizeof(char));
+    }
+
+    readAllVenues(venues, venuesSize, filenameV);
+    /*printAllVenues(venues, venuesSize);*/
+
+    readAllBands(bands, bandsSize, filenameB);
+    /*printAllBands(bands, bandsSize);*/
+
+    readAllMusicians(musicians, musiciansSize, filenameM, musiciansBandNames);
+
+    /*assigning individual bands to each band from list of musicians*/
+    assingBandsFromListOFMusicians(bands, musicians, musiciansBandNames, bandsSize, musiciansSize);
+
+    while (1)
+    {
+        mainMenu();
+        scanf("%d", &optionMenu);
+        if (optionMenu == 1)
+        {
+            printSubMenuOption1();
+            scanf("%d", &childOption);
+            if (childOption == 1)
+            {
+                printAllBands(bands, bandsSize);
+            }
+            else if (childOption == 2)
+            {
+                printAllVenues(venues, venuesSize);
+            }
+            else
+            {
+                printf("Wrong option number\n");
+            }
+        }
+        else if (optionMenu == 2)
+        {
+            printSubMenuOption2();
+            scanf("%d %d", &bandNumber, &venueNumber);
+            resultTicket = calculateTicketPrice(bands[bandNumber - 1].cache, venues[venueNumber - 1].capacity);
+            printf("The minimum ticket price is %.2f\n", resultTicket);
+        }
+        else if (optionMenu == 3)
+        {
+            printSubMenuOption3();
+            scanf("%d", &bandNumber);
+            printAllMusicians(bands[bandNumber - 1].musicians, bands[bandNumber - 1].num_musicians);
+        }
+        else if (optionMenu == 4)
+        {
+            printf("bye!\n");
+            break;
+        }
+        else
+        {
+            printf("Wrong option number\n");
+        }
+    }
+
+    return 0;
 }
